@@ -54,6 +54,11 @@ class BasicTextInterface implements ITextInterface
 	private var NativeScrollPosition:Int;
 	private var ScrollScale:Float;
 	
+	private var SettingNameList:Array <String>;
+	private var SettingDescriptionList:Array <String>;
+	private var SettingSetterList:Array <String -> Void>;
+	private var SettingGetterList:Array <Void -> String>;
+	
 	public function new ( Width:UInt, Height:UInt, Format:BasicTextInterfaceFormat = null )
 	{
 		
@@ -140,6 +145,90 @@ class BasicTextInterface implements ITextInterface
 		
 		NativeScrollPosition = 0;
 		ScrollScale = 10.0;
+		
+		//========================//
+		
+		SettingNameList = new Array <String> ();
+		SettingDescriptionList = new Array <String> ();
+		
+		SettingNameList [ 0 ] = "ScrollSpeed";
+		SettingDescriptionList [ 0 ] = "Sets the speed at which the mouse wheel scrolls text. [ 1 - 20 ]";
+		
+		SettingGetterList = new Array <Void -> String> ();
+		SettingSetterList = new Array <String -> Void> ();
+		
+		SettingSetterList [ 0 ] = SetScrollSpeed;
+		SettingGetterList [ 0 ] = GetScrollSpeed;
+		
+	};
+	
+	public function GetSettingNameList () : Array <String>
+	{
+		
+		return SettingNameList;
+		
+	};
+	
+	public function GetSettingDescription ( SettingName:String ) : String
+	{
+		
+		var Index:Int = SettingNameList.indexOf ( SettingName );
+		
+		if ( Index == - 1 )
+			return "null";
+		
+		return SettingDescriptionList [ Index ];
+		
+	};
+	
+	public function SetSetting ( SettingName:String, Value:String ) : Void
+	{
+		
+		var Index:Int = SettingNameList.indexOf ( SettingName );
+		
+		if ( Index == - 1 )
+			return;
+		
+		SettingSetterList [ Index ] ( Value );
+		
+	};
+	
+	public function GetSetting ( SettingName:String ) : String
+	{
+		
+		var Index:Int = SettingNameList.indexOf ( SettingName );
+		
+		if ( Index == - 1 )
+			return "null";
+		
+		return SettingGetterList [ Index ] ();
+		
+	};
+	
+	public function SetScrollSpeed ( Value:String ) : Void
+	{
+		
+		var IntValue = Std.parseInt ( Value );
+		
+		if ( IntValue != null )
+		{
+			
+			if ( ( IntValue >= 1 ) && ( IntValue <= 20 ) )
+			{
+				
+				ScrollScale = ( 21.0 - IntValue ) / 2;
+				trace ( "Setting scroll scale to " + ScrollScale );
+				
+			}
+			
+		}
+		
+	};
+	
+	public function GetScrollSpeed () : String
+	{
+		
+		return Std.string ( Std.int ( 21 - ( ScrollScale * 2 ) ) );
 		
 	};
 	
@@ -368,7 +457,7 @@ class BasicTextInterface implements ITextInterface
 		
 	};
 	
-	public function GetDisplayObject () : DisplayObject
+	public function GetGraphicsRoot () : DisplayObject
 	{
 		
 		return GraphicsRoot;
