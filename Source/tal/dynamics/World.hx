@@ -48,6 +48,7 @@ class World
 	private var Executing:Bool;
 	private var EnteredContext:Bool;
 	
+	private var PreWaiterMode:UInt;
 	private var InputWaiter:IInputWaiterMethod;
 	private var CapturedInputWaiter:ICapturedInputWaiterMethod;
 	
@@ -68,7 +69,7 @@ class World
 		
 		MethodQueueStack = new Array <MethodQueue> ();
 		
-		GlobalHelpDefinition = new BasicHelpCommand ( "HELP: Hello world!" );
+		GlobalHelpDefinition = new BasicHelpCommand ( "==> Help\n\nHelp: Hello world!\n\n" );
 		GlobalCommandSet.push ( GlobalHelpDefinition );
 		
 		Blocked = false;
@@ -125,7 +126,57 @@ class World
 		else
 		{
 			
+			var MethodList:Array <IMethod> = null;
 			
+			for ( Command in GlobalCommandSet )
+			{
+				
+				MethodList = Command.Test ( Input );
+				
+				if ( MethodList != null )
+					break;
+				
+			}
+			
+			if ( ( MethodList != null ) && ( LocalCommandSet != null ) )
+			{
+				
+				for ( Command in LocalCommandSet )
+				{
+					
+					MethodList = Command.Test ( Input );
+					
+					if ( MethodList != null )
+						break;
+					
+				}
+				
+			}
+			
+			if ( ( MethodList != null ) && ( InventoryCommandSet != null ) )
+			{
+				
+				for ( Command in InventoryCommandSet )
+				{
+					
+					MethodList = Command.Test ( Input );
+					
+					if ( MethodList != null )
+						break;
+					
+				}
+				
+			}
+			
+			if ( MethodList != null )
+			{
+				
+				PushMethodQueueForExecution ( MethodList );
+				EnteredContext = false;
+				
+				Execute ();
+				
+			}
 			
 		}
 		
@@ -135,6 +186,22 @@ class World
 	{
 		
 		Rooms.push ( Room );
+		
+	};
+	
+	public function Link () : Void
+	{
+		
+		for ( Command in GlobalCommandSet )
+			Command.Link ( this );
+		
+		for ( Room in Rooms )
+		{
+			
+			for ( Command in Room.GetLocalCommandSet () )
+				Command.Link ( this );
+			
+		}
 		
 	};
 	
@@ -207,6 +274,14 @@ class World
 		
 	};
 	
+	public function ClearInput () : Void
+	{
+		
+		if ( Interface != null )
+			Interface.ClearInput ();
+		
+	};
+	
 	public function PushMethodQueueForExecution ( Queue:Array <IMethod> ) : Void
 	{
 		
@@ -232,6 +307,10 @@ class World
 			Execute ();
 			
 			InputWaiter = null;
+			CapturedInputWaiter = null;
+			
+			if ( Interface.GetMode () != TextInterfaceMode.BLOCK_INPUT )
+				Interface.SetMode ( PreWaiterMode );
 			
 		}
 		
@@ -248,10 +327,10 @@ class World
 		
 		var CurrentQueue:MethodQueue = MethodQueueStack [ MethodQueueStack.length - 1 ];
 		
-		while ( ! Blocked && CurrentQueue != null )
+		while ( ( ! Blocked ) && ( CurrentQueue != null ) )
 		{
 			
-			while ( CurrentQueue.Index < CurrentQueue.MethodList.length && ! Blocked )
+			while ( ( CurrentQueue.Index < CurrentQueue.MethodList.length ) && ( ! Blocked ) )
 			{
 				
 				Blocked = true;
@@ -279,11 +358,45 @@ class World
 				
 			}
 			else if ( CurrentQueue.Index == CurrentQueue.MethodList.length )
+			{
 				MethodQueueStack.pop ();
+				
+				if ( MethodQueueStack.length != 0 )
+					CurrentQueue = MethodQueueStack [ MethodQueueStack.length - 1 ];
+				else
+					CurrentQueue = null;
+				
+			}
+			
+			
 			
 		}
 		
 		Executing = false;
+		
+		if ( ! Blocked )
+			Interface.SetMode ( TextInterfaceMode.ALLOW_INPUT );
+		
+	};
+	
+	public function HoldInput () : Void
+	{
+		
+		Interface.SetMode ( TextInterfaceMode.HOLD_INPUT );
+		
+	};
+	
+	public function BlockInput () : Void
+	{
+		
+		Interface.SetMode ( TextInterfaceMode.BLOCK_INPUT );
+		
+	};
+	
+	public function UnBlockInput () : Void
+	{
+		
+		Interface.SetMode ( TextInterfaceMode.ALLOW_INPUT );
 		
 	};
 	
@@ -292,12 +405,18 @@ class World
 		
 		InputWaiter = SourceMethod;
 		
+		PreWaiterMode = Interface.GetMode ();
+		Interface.SetMode ( TextInterfaceMode.ALLOW_INPUT );
+		
 	};
 	
 	public function WaitOnCapturedInput ( SourceMethod:ICapturedInputWaiterMethod ) : Void
 	{
 		
 		CapturedInputWaiter = SourceMethod;
+		
+		PreWaiterMode = Interface.GetMode ();
+		Interface.SetMode ( TextInterfaceMode.CAPTURE_INPUT );
 		
 	};
 	

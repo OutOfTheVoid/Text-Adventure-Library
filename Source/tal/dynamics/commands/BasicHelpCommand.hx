@@ -4,6 +4,7 @@ import tal.dynamics.commands.ICommand;
 
 import tal.dynamics.methods.IMethod;
 import tal.dynamics.methods.SimpleOutputMethod;
+import tal.dynamics.methods.ClearInputMethod;
 
 class BasicHelpCommand implements ICommand
 {
@@ -16,6 +17,7 @@ class BasicHelpCommand implements ICommand
 		
 		MethodList = new Array <IMethod> ();
 		MethodList.push ( new SimpleOutputMethod ( HelpString ) );
+		MethodList.push ( new ClearInputMethod () );
 		
 	};
 	
