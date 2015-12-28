@@ -2,6 +2,8 @@ package tal.graphics;
 
 import tal.graphics.TextInterfaceMode;
 
+import tal.exceptions.TALException;
+
 import openfl.display.DisplayObject;
 import openfl.display.Sprite;
 import openfl.display.Shape;
@@ -48,6 +50,9 @@ class BasicTextInterface implements ITextInterface
 	
 	private var TextCarrotState:Bool;
 	private var CarrotTimer:Timer;
+	
+	private var NativeScrollPosition:Int;
+	private var ScrollScale:Float;
 	
 	public function new ( Width:UInt, Height:UInt, Format:BasicTextInterfaceFormat = null )
 	{
@@ -133,6 +138,9 @@ class BasicTextInterface implements ITextInterface
 		CarrotTimer.addEventListener ( TimerEvent.TIMER, OnCarrotTimer );
 		CarrotTimer.start ();
 		
+		NativeScrollPosition = 0;
+		ScrollScale = 10.0;
+		
 	};
 	
 	private function OnAddedToStage ( E:Event ) : Void
@@ -147,6 +155,7 @@ class BasicTextInterface implements ITextInterface
 		StageRef.addEventListener ( MouseEvent.CLICK, OnStageClick );
 		StageRef.addEventListener ( KeyboardEvent.KEY_DOWN, OnKeyDown );
 		StageRef.addEventListener ( KeyboardEvent.KEY_UP, OnKeyUp );
+		StageRef.addEventListener ( MouseEvent.MOUSE_WHEEL, OnMouseWheel );
 		
 	};
 	
@@ -336,6 +345,21 @@ class BasicTextInterface implements ITextInterface
 		
 	};
 	
+	private function OnMouseWheel ( E:MouseEvent ) : Void
+	{
+		
+		NativeScrollPosition -= E.delta;
+		
+		if ( NativeScrollPosition < 0 )
+			NativeScrollPosition = 0;
+		
+		if ( NativeScrollPosition > OutputField.bottomScrollV * ScrollScale )
+			NativeScrollPosition = Math.floor ( OutputField.bottomScrollV * ScrollScale );
+		
+		OutputField.scrollV = Math.floor ( NativeScrollPosition / ScrollScale );
+		
+	};
+	
 	private function OnKeyUp ( E:KeyboardEvent ) : Void
 	{
 		
@@ -371,6 +395,13 @@ class BasicTextInterface implements ITextInterface
 		
 		OutputField.appendText ( Output );
 		OutputField.scrollV = OutputField.bottomScrollV;
+		
+	};
+	
+	public function GetMode () : UInt
+	{
+		
+		return InterfaceMode;
 		
 	};
 	
@@ -435,7 +466,11 @@ class BasicTextInterface implements ITextInterface
 			default:
 			{
 				
+				// Probably should throw an exception, unless we're looking for error tolerance.
+				// throw new TALException ( "BasicTextInterface set to an invalid mode.", 1 );
 				
+				InterfaceMode = OldMode;
+				return;
 				
 			}
 			

@@ -10,6 +10,7 @@ interface ITextInterface
 	public function GetOutput () : String;
 	
 	public function SetMode ( Mode:UInt ) : Void;
+	public function GetMode () : UInt;
 	
 	public function SetInputCallback ( OnInput:String -> Void ) : Void;
 	public function SetCapturedInputCallback ( OnCapturedInput:KeyboardEvent -> Bool -> Void ) : Void;

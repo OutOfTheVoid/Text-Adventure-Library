@@ -1,4 +1,4 @@
-package tal;
+package tal.dynamics.variables;
 
 class StringVariable
 {
