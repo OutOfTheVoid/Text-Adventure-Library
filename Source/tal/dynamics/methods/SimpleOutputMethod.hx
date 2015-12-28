@@ -17,6 +17,13 @@ class SimpleOutputMethod implements IMethod
 		
 	};
 	
+	public function ResetOutput ( OutputString:String ) : Void
+	{
+		
+		this.OutputString = OutputString;
+		
+	};
+	
 	public function Run ( OnFinished:Void -> Void ) : Void
 	{
 		

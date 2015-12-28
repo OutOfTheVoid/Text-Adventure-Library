@@ -3,7 +3,7 @@ package tal.dynamics;
 import tal.dynamics.room.IRoom;
 
 import tal.dynamics.commands.ICommand;
-import tal.dynamics.commands.BasicHelpCommand;
+import tal.dynamics.commands.BasicResponseCommand;
 
 import tal.dynamics.methods.IMethod;
 import tal.dynamics.methods.IInputWaiterMethod;
@@ -42,7 +42,7 @@ class World
 	
 	private var GraphicsRoot:Sprite;
 	
-	private var GlobalHelpDefinition:BasicHelpCommand;
+	private var GlobalHelpDefinition:BasicResponseCommand;
 	
 	private var Blocked:Bool;
 	private var Executing:Bool;
@@ -69,7 +69,7 @@ class World
 		
 		MethodQueueStack = new Array <MethodQueue> ();
 		
-		GlobalHelpDefinition = new BasicHelpCommand ( "==> Help\n\nHelp: Hello world!\n\n" );
+		GlobalHelpDefinition = new BasicResponseCommand ( "==> Help\n\nHelp: Hello world!\n\n", [ "help" ] );
 		GlobalCommandSet.push ( GlobalHelpDefinition );
 		
 		Blocked = false;
@@ -227,6 +227,13 @@ class World
 		}
 		
 		trace ( "ERROR! Set invalid room!" );
+		
+	};
+	
+	public function EnQueueCommand ( Command:String ) : Void
+	{
+		
+		
 		
 	};
 	
