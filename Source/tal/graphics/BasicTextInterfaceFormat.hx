@@ -41,7 +41,7 @@ class BasicTextInterfaceFormat
 		BackgroundColor = 0xBB9999;
 		
 		ScrollSize = 10.0;
-		ScrollBackColor = 0x9999FF;
+		ScrollBackColor = 0x999999;
 		ScrollBarColor = 0xFFFFFF;
 		
 		TextBorderSpacing = 5.0;

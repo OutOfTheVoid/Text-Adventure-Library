@@ -24,5 +24,7 @@ interface ITextInterface
 	public function SetCapturedInputCallback ( OnCapturedInput:KeyboardEvent -> Bool -> Void ) : Void;
 	
 	public function ClearInput () : Void;
+	
+	public function GetPrompt () : String;
 		
 }

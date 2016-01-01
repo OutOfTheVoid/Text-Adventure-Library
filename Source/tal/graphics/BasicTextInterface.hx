@@ -584,11 +584,52 @@ class BasicTextInterface implements ITextInterface
 	public function ClearInput () : Void
 	{
 		
-		if ( TextCarrotState )
-			InputField.text = InterfaceFormat.Prompt + "|";
-		else
-			InputField.text = InterfaceFormat.Prompt;
+		switch ( InterfaceMode )
+		{
 			
+			case TextInterfaceMode.ALLOW_INPUT:
+			{
+				
+				if ( TextCarrotState )
+					InputField.text = InterfaceFormat.Prompt + "|";
+				else
+					InputField.text = InterfaceFormat.Prompt;
+				
+			}
+			
+			case TextInterfaceMode.HOLD_INPUT:
+			{
+				
+				if ( TextCarrotState )
+					InputField.text = InterfaceFormat.HeldPrompt + "|";
+				else
+					InputField.text = InterfaceFormat.HeldPrompt;
+				
+			}
+			
+			case TextInterfaceMode.BLOCK_INPUT:
+			{
+				
+				InputField.text = InterfaceFormat.DisabledPrompt;
+				
+			}
+			
+			case TextInterfaceMode.CAPTURE_INPUT:
+			{
+				
+				InputField.text = InterfaceFormat.DisabledPrompt;
+				
+			}
+			
+		}
+			
+	};
+	
+	public function GetPrompt () : String
+	{
+		
+		return InterfaceFormat.Prompt;
+		
 	};
 	
 }

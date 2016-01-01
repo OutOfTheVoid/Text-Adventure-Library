@@ -178,6 +178,12 @@ class World
 				Execute ();
 				
 			}
+			else
+			{
+				
+				AppendOutput ( "You tried to \"" + Input + "\" but it didn't make sense.\n\n" );
+				
+			}
 			
 		}
 		
@@ -187,6 +193,13 @@ class World
 	{
 		
 		Rooms.push ( Room );
+		
+	};
+	
+	public function AddGlobalCommand ( Command:ICommand ) : Void
+	{
+		
+		GlobalCommandSet.push ( Command );
 		
 	};
 	
@@ -333,6 +346,16 @@ class World
 		
 		if ( Interface != null )
 			Interface.ClearInput ();
+		
+	};
+	
+	public function GetPrompt () : String
+	{
+		
+		if ( Interface != null )
+			return Interface.GetPrompt ();
+		
+		return "";
 		
 	};
 	
