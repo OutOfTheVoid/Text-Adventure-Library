@@ -36,7 +36,7 @@ class World
 	
 	private var Interface:ITextInterface;
 	
-	private var CommandQueue:Array <ICommand>;
+	private var CommandQueue:Array <Array <IMethod>>;
 	
 	private var MethodQueueStack:Array <MethodQueue>;
 	
@@ -68,6 +68,7 @@ class World
 		GraphicsRoot = new Sprite ();
 		
 		MethodQueueStack = new Array <MethodQueue> ();
+		CommandQueue = new Array <Array <IMethod>> ();
 		
 		GlobalHelpDefinition = new BasicResponseCommand ( "==> Help\n\nHelp: Hello world!\n\n", [ "help" ] );
 		GlobalCommandSet.push ( GlobalHelpDefinition );
@@ -230,10 +231,56 @@ class World
 		
 	};
 	
-	public function EnQueueCommand ( Command:String ) : Void
+	public function EnqueueCommand ( Command:String ) : Void
 	{
 		
+		var MethodList:Array <IMethod> = null;
 		
+		for ( TestCommand in GlobalCommandSet )
+		{
+			
+			MethodList = TestCommand.Test ( Command );
+			
+			if ( MethodList != null )
+				break;
+			
+		}
+		
+		if ( ( MethodList == null ) && ( LocalCommandSet != null ) )
+		{
+			
+			for ( TestCommand in LocalCommandSet )
+			{
+				
+				MethodList = TestCommand.Test ( Command );
+				
+				if ( MethodList != null )
+					break;
+				
+			}
+			
+		}
+		
+		if ( ( MethodList == null ) && ( InventoryCommandSet != null ) )
+		{
+			
+			for ( TestCommand in InventoryCommandSet )
+			{
+				
+				MethodList = TestCommand.Test ( Command );
+				
+				if ( MethodList != null )
+					break;
+				
+			}
+			
+		}
+		
+		if ( MethodList != null )
+			CommandQueue.push ( MethodList );
+		
+		if ( ( ! Executing ) && ( ! Blocked ) )
+			Execute ();
 		
 	};
 	
@@ -293,10 +340,6 @@ class World
 	{
 		
 		var MQueue:MethodQueue = { Index : 0, MethodList : Queue };
-		
-		MQueue.Index = 0;
-		MQueue.MethodList = Queue;
-		
 		MethodQueueStack.push ( MQueue );
 		
 		EnteredContext = true;
@@ -330,7 +373,19 @@ class World
 		Executing = true;
 		
 		if ( MethodQueueStack.length == 0 )
-			return;
+		{
+			
+			if ( CommandQueue.length != 0 )
+			{
+				
+				var NewQueue:MethodQueue = { Index : 0, MethodList : CommandQueue.shift () };
+				MethodQueueStack.push ( NewQueue );
+				
+			}
+			else
+				return;
+			
+		}
 		
 		var CurrentQueue:MethodQueue = MethodQueueStack [ MethodQueueStack.length - 1 ];
 		
@@ -344,10 +399,10 @@ class World
 				
 				CurrentQueue.MethodList [ CurrentQueue.Index ].Run ( UnBlock );
 				
+				CurrentQueue.Index ++;
+				
 				if ( ! Blocked )
 				{
-					
-					CurrentQueue.Index ++;
 					
 					if ( EnteredContext )
 						break;
@@ -356,26 +411,44 @@ class World
 				
 			}
 			
-			if ( EnteredContext )
+			if ( ! Blocked )
 			{
 				
-				CurrentQueue = MethodQueueStack [ MethodQueueStack.length - 1 ];
-				
-				EnteredContext = false;
-				
-			}
-			else if ( CurrentQueue.Index == CurrentQueue.MethodList.length )
-			{
-				MethodQueueStack.pop ();
-				
-				if ( MethodQueueStack.length != 0 )
+				if ( EnteredContext )
+				{
+					
 					CurrentQueue = MethodQueueStack [ MethodQueueStack.length - 1 ];
-				else
-					CurrentQueue = null;
+					
+					EnteredContext = false;
+					
+				}
+				else if ( CurrentQueue.Index == CurrentQueue.MethodList.length )
+				{
+					
+					MethodQueueStack.pop ();
+					
+					if ( MethodQueueStack.length != 0 )
+						CurrentQueue = MethodQueueStack [ MethodQueueStack.length - 1 ];
+					else
+					{
+						
+						if ( CommandQueue.length != 0 )
+						{
+							
+							var NewQueue:MethodQueue = { Index : 0, MethodList : CommandQueue.shift () };
+							
+							MethodQueueStack.push ( NewQueue );
+							CurrentQueue = NewQueue;
+							
+						}
+						else
+							CurrentQueue = null;
+						
+					}
+					
+				}
 				
 			}
-			
-			
 			
 		}
 		
