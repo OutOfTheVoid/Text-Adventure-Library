@@ -9,10 +9,10 @@ import tal.dynamics.methods.IMethod;
 import tal.dynamics.methods.IInputWaiterMethod;
 import tal.dynamics.methods.ICapturedInputWaiterMethod;
 
-import tal.dynamics.variables.StringVariable;
-
 import tal.graphics.ITextInterface;
 import tal.graphics.TextInterfaceMode;
+
+import tal.util.parsing.StringParsingTools;
 
 import openfl.events.KeyboardEvent;
 
@@ -30,7 +30,10 @@ class World
 	private var LocalCommandSet:Array <ICommand>;
 	private var InventoryCommandSet:Array <ICommand>;
 	
-	private var StringVariables:Array <StringVariable>;
+	private var StringVariables:Map <String, String>;
+	private var IntVariables:Map <String, Int>;
+	private var FloatVariables:Map <String, Float>;
+	private var BoolVariables:Map <String, Bool>;
 	
 	private var CurrentRoom:IRoom;
 	
@@ -39,6 +42,11 @@ class World
 	private var CommandQueue:Array <Array <IMethod>>;
 	
 	private var MethodQueueStack:Array <MethodQueue>;
+	
+	private var LocalStringStack:Array <String>;
+	private var LocalIntStack:Array <Int>;
+	private var LocalFloatStack:Array <Float>;
+	private var LocalBoolStack:Array <Float>;
 	
 	private var GraphicsRoot:Sprite;
 	
@@ -61,7 +69,10 @@ class World
 		LocalCommandSet = new Array <ICommand> ();
 		InventoryCommandSet = new Array <ICommand> ();
 		
-		StringVariables = new Array <StringVariable> ();
+		StringVariables = new Map <String, String> ();
+		IntVariables = new Map <String, Int> ();
+		FloatVariables = new Map <String, Float> ();
+		BoolVariables = new Map <String, Bool> ();
 		
 		CurrentRoom = null;
 		
@@ -181,7 +192,11 @@ class World
 			else
 			{
 				
-				AppendOutput ( "You tried to \"" + Input + "\" but it didn't make sense.\n\n" );
+				var CommandString:String = StringParsingTools.FormatCommandForMatching ( Input );
+				CommandString = CommandString.charAt ( 0 ).toUpperCase () + CommandString.substr ( 1 ).toLowerCase ();
+				
+				AppendOutput ( "==> " + CommandString + "\n\nYou tried to \"" + Input + "\" but it didn't make sense.\n\n" );
+				ClearInput ();
 				
 			}
 			
@@ -300,36 +315,168 @@ class World
 	public function GetStringVariable ( Name:String ) : String
 	{
 		
-		for ( Variable in StringVariables )
-		{
-			
-			if ( Variable.GetName () == Name )
-				return Variable.Get ();
-			
-		}
+		return StringVariables.get ( Name );
 		
-		return null;
+	};
+	
+	public function GetIntVariable ( Name:String ) : Int
+	{
+		
+		return IntVariables.get ( Name );
+		
+	};
+	
+	public function GetFloatVariable ( Name:String ) : Float
+	{
+		
+		return FloatVariables.get ( Name );
+		
+	};
+	
+	public function GetBoolVariable ( Name:String ) : Bool
+	{
+		
+		return BoolVariables.get ( Name );
 		
 	};
 	
 	public function SetStringVariable ( Name:String, Value:String ) : Void
 	{
 		
-		for ( Vairable in StringVariables )
-		{
-			
-			if ( Vairable.GetName () == Name )
-			{
-				
-				Vairable.Set ( Value );
-				
-				return;
-				
-			}
-			
-		}
+		StringVariables.set ( Name, Value );
 		
-		StringVariables.push ( new StringVariable ( Name, Value ) );
+	};
+	
+	public function SetIntVariable ( Name:String, Value:Int ) : Void
+	{
+		
+		IntVariables.set ( Name, Value );
+		
+	};
+	
+	public function SetFloatVariable ( Name:String, Value:Float ) : Void
+	{
+		
+		FloatVariables.set ( Name, Value );
+		
+	};
+	
+	public function SetBoolVariable ( Name:String, Value:Bool ) : Void
+	{
+		
+		BoolVariables.set ( Name, Value );
+		
+	};
+	
+	public function PushStringLocal ( Value:String ) : Void
+	{
+		
+		LocalStringStack.push ( Value );
+		
+	};
+	
+	public function PushIntLocal ( Value:Int ) : Void
+	{
+		
+		LocalIntStack.push ( Value );
+		
+	};
+	
+	public function PushFloatLocal ( Value:Float ) : Void
+	{
+		
+		LocalFloatStack.push ( Value );
+		
+	};
+	
+	public function PushBoolLocal ( Value:Bool ) : Void
+	{
+		
+		LocalBoolStack.push ( Value );
+		
+	};
+	
+	public function PopStringLocal ( Value:String ) : String
+	{
+		
+		return LocalStringStack.pop ( Value );
+		
+	};
+	
+	public function PopIntLocal ( Value:Int ) : Int
+	{
+		
+		return LocalIntStack.pop ( Value );
+		
+	};
+	
+	public function PopFloatLocal ( Value:Float ) : Float
+	{
+		
+		return LocalFloatStack.pop ( Value );
+		
+	};
+	
+	public function PopBoolLocal ( Value:Bool ) : Bool
+	{
+		
+		return LocalBoolStack.pop ( Value );
+		
+	};
+	
+	public function PopStringLocal ( Value:String, Index:UInt ) : Void
+	{
+		
+		LocalStringStack [ LocalStringStack.length - Index - 1 ] = Value;
+		
+	};
+	
+	public function SetIntLocal ( Value:Int, Index:UInt ) : Void
+	{
+		
+		LocalIntStack [ LocalIntStack.length - Index - 1 ] = Value;
+		
+	};
+	
+	public function SetFloatLocal ( Value:Float, Index:UInt ) : Void
+	{
+		
+		LocalFloatStack [ LocalFloatStack.length - Index - 1 ] = Value;
+		
+	};
+	
+	public function SetBoolLocal ( Value:Bool, Index:UInt ) : Void
+	{
+		
+		LocalBoolStack [ LocalBoolStack.length - Index - 1 ] = Value;
+		
+	};
+	
+	public function GetStringLocal ( Index:UInt ) : String
+	{
+		
+		return LocalStringStack [ LocalStringStack.length - Index - 1 ];
+		
+	};
+	
+	public function GetIntLocal ( Index:UInt ) : Int
+	{
+		
+		return LocalIntStack [ LocalIntStack.length - Index - 1 ];
+		
+	};
+	
+	public function GetFloatLocal ( Index:UInt ) : Float
+	{
+		
+		return LocalFloatStack [ LocalIntStack.length - Index - 1 ];
+		
+	};
+	
+	public function GetBoolLocal ( Index:UInt ) : Bool
+	{
+		
+		return LocalBoolStack [ LocalIntStack.length - Index - 1 ];
 		
 	};
 	
