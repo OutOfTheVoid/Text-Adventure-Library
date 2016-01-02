@@ -424,7 +424,7 @@ class World
 		
 	};
 	
-	public function PopStringLocal ( Value:String, Index:UInt ) : Void
+	public function SetStringLocal ( Value:String, Index:UInt ) : Void
 	{
 		
 		LocalStringStack [ LocalStringStack.length - Index - 1 ] = Value;
