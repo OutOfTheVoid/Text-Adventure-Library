@@ -46,7 +46,7 @@ class World
 	private var LocalStringStack:Array <String>;
 	private var LocalIntStack:Array <Int>;
 	private var LocalFloatStack:Array <Float>;
-	private var LocalBoolStack:Array <Float>;
+	private var LocalBoolStack:Array <Bool>;
 	
 	private var GraphicsRoot:Sprite;
 	
@@ -396,31 +396,31 @@ class World
 		
 	};
 	
-	public function PopStringLocal ( Value:String ) : String
+	public function PopStringLocal () : String
 	{
 		
-		return LocalStringStack.pop ( Value );
+		return LocalStringStack.pop ();
 		
 	};
 	
-	public function PopIntLocal ( Value:Int ) : Int
+	public function PopIntLocal () : Int
 	{
 		
-		return LocalIntStack.pop ( Value );
+		return LocalIntStack.pop ();
 		
 	};
 	
-	public function PopFloatLocal ( Value:Float ) : Float
+	public function PopFloatLocal () : Float
 	{
 		
-		return LocalFloatStack.pop ( Value );
+		return LocalFloatStack.pop ();
 		
 	};
 	
-	public function PopBoolLocal ( Value:Bool ) : Bool
+	public function PopBoolLocal () : Bool
 	{
 		
-		return LocalBoolStack.pop ( Value );
+		return LocalBoolStack.pop ();
 		
 	};
 	
@@ -469,14 +469,14 @@ class World
 	public function GetFloatLocal ( Index:UInt ) : Float
 	{
 		
-		return LocalFloatStack [ LocalIntStack.length - Index - 1 ];
+		return LocalFloatStack [ LocalFloatStack.length - Index - 1 ];
 		
 	};
 	
 	public function GetBoolLocal ( Index:UInt ) : Bool
 	{
 		
-		return LocalBoolStack [ LocalIntStack.length - Index - 1 ];
+		return LocalBoolStack [ LocalBoolStack.length - Index - 1 ];
 		
 	};
 	
