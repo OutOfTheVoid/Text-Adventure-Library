@@ -2,6 +2,8 @@ package tal.dynamics.room;
 
 import tal.dynamics.commands.ICommand;
 
+import tal.dynamics.World;
+
 interface IRoom
 {
 	
@@ -12,5 +14,7 @@ interface IRoom
 	
 	public function Enter () : Void;
 	public function Exit () : Void;
+	
+	public function Link ( WorldInstance:World ) : Void;
 	
 }

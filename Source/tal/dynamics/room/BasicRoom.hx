@@ -2,6 +2,8 @@ package tal.dynamics.room;
 
 import tal.dynamics.commands.ICommand;
 
+import tal.dynamics.World;
+
 class BasicRoom
 {
 	
@@ -10,13 +12,21 @@ class BasicRoom
 	
 	private var LocalCommandSet:Array <ICommand>;
 	
-	public function new ( IDName:String, SimpleDescription:String )
+	private var OnEnterCommand:String;
+	private var OnExitCommand:String;
+	
+	private var WorldInstance:World;
+	
+	public function new ( IDName:String, SimpleDescription:String, CommandSet:Array <ICommand>, OnEnterCommand:String, OnExitCommand:String )
 	{
 		
 		this.IDName = IDName;
 		this.SimpleDescription = SimpleDescription;
 		
-		LocalCommandSet = new Array <ICommand> ();
+		LocalCommandSet = CommandSet;
+		
+		this.OnEnterCommand = OnEnterCommand;
+		this.OnExitCommand = OnExitCommand;
 		
 	};
 	
@@ -41,17 +51,26 @@ class BasicRoom
 		
 	};
 	
+	public function Link ( WorldInstance:World ) : Void
+	{
+		
+		this.WorldInstance = WorldInstance;
+		
+	};
+	
 	public function Enter () : Void
 	{
 		
-		
+		if ( OnEnterCommand != null )
+			WorldInstance.EnqueueCommand ( OnEnterCommand, true );
 		
 	};
 	
 	public function Exit () : Void
 	{
 		
-		
+		if ( OnEnterCommand != null )
+			WorldInstance.EnqueueCommand ( OnEnterCommand, true );
 		
 	};
 	

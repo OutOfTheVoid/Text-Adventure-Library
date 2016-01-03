@@ -143,17 +143,7 @@ class World
 			for ( Command in GlobalCommandSet )
 			{
 				
-				MethodList = Command.Test ( Input );
-				
-				if ( MethodList != null )
-					break;
-				
-			}
-			
-			if ( ( MethodList != null ) && ( LocalCommandSet != null ) )
-			{
-				
-				for ( Command in LocalCommandSet )
+				if ( Command.GetHidden () == false )
 				{
 					
 					MethodList = Command.Test ( Input );
@@ -165,16 +155,41 @@ class World
 				
 			}
 			
+			if ( ( MethodList != null ) && ( LocalCommandSet != null ) )
+			{
+				
+				for ( Command in LocalCommandSet )
+				{
+					
+					if ( Command.GetHidden () == false )
+					{
+						
+						MethodList = Command.Test ( Input );
+						
+						if ( MethodList != null )
+							break;
+						
+					}
+					
+				}
+				
+			}
+			
 			if ( ( MethodList != null ) && ( InventoryCommandSet != null ) )
 			{
 				
 				for ( Command in InventoryCommandSet )
 				{
 					
-					MethodList = Command.Test ( Input );
-					
-					if ( MethodList != null )
-						break;
+					if ( Command.GetHidden () == false )
+					{
+						
+						MethodList = Command.Test ( Input );
+						
+						if ( MethodList != null )
+							break;
+						
+					}
 					
 				}
 				
@@ -259,7 +274,7 @@ class World
 		
 	};
 	
-	public function EnqueueCommand ( Command:String ) : Void
+	public function EnqueueCommand ( Command:String, AllowHidden:Bool = false ) : Void
 	{
 		
 		var MethodList:Array <IMethod> = null;
@@ -267,17 +282,7 @@ class World
 		for ( TestCommand in GlobalCommandSet )
 		{
 			
-			MethodList = TestCommand.Test ( Command );
-			
-			if ( MethodList != null )
-				break;
-			
-		}
-		
-		if ( ( MethodList == null ) && ( LocalCommandSet != null ) )
-		{
-			
-			for ( TestCommand in LocalCommandSet )
+			if ( ( ! TestCommand.GetHidden () ) || AllowHidden )
 			{
 				
 				MethodList = TestCommand.Test ( Command );
@@ -289,16 +294,41 @@ class World
 			
 		}
 		
+		if ( ( MethodList == null ) && ( LocalCommandSet != null ) )
+		{
+			
+			for ( TestCommand in LocalCommandSet )
+			{
+				
+				if ( ( ! TestCommand.GetHidden () ) || AllowHidden )
+				{
+					
+					MethodList = TestCommand.Test ( Command );
+					
+					if ( MethodList != null )
+						break;
+				
+				}
+					
+			}
+			
+		}
+		
 		if ( ( MethodList == null ) && ( InventoryCommandSet != null ) )
 		{
 			
 			for ( TestCommand in InventoryCommandSet )
 			{
 				
-				MethodList = TestCommand.Test ( Command );
+				if ( ( ! TestCommand.GetHidden () ) || AllowHidden )
+				{
+					
+					MethodList = TestCommand.Test ( Command );
+					
+					if ( MethodList != null )
+						break;
 				
-				if ( MethodList != null )
-					break;
+				}
 				
 			}
 			
