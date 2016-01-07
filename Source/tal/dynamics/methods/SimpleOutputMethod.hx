@@ -28,6 +28,7 @@ class SimpleOutputMethod implements IMethod
 	{
 		
 		WorldInstance.AppendOutput ( OutputString );
+		
 		OnFinished ();
 		
 	};

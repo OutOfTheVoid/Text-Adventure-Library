@@ -20,6 +20,8 @@ class RoomChangeMethod
 		
 		WorldInstance.SetRoom ( Destination );
 		
+		OnFinished ();
+		
 	};
 	
 	public function Link ( WorldInstance:World )
