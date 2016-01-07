@@ -43,11 +43,6 @@ class World
 	
 	private var MethodQueueStack:Array <MethodQueue>;
 	
-	private var LocalStringStack:Array <String>;
-	private var LocalIntStack:Array <Int>;
-	private var LocalFloatStack:Array <Float>;
-	private var LocalBoolStack:Array <Bool>;
-	
 	private var GraphicsRoot:Sprite;
 	
 	private var GlobalHelpDefinition:BasicResponseCommand;
@@ -395,118 +390,6 @@ class World
 	{
 		
 		BoolVariables.set ( Name, Value );
-		
-	};
-	
-	public function PushStringLocal ( Value:String ) : Void
-	{
-		
-		LocalStringStack.push ( Value );
-		
-	};
-	
-	public function PushIntLocal ( Value:Int ) : Void
-	{
-		
-		LocalIntStack.push ( Value );
-		
-	};
-	
-	public function PushFloatLocal ( Value:Float ) : Void
-	{
-		
-		LocalFloatStack.push ( Value );
-		
-	};
-	
-	public function PushBoolLocal ( Value:Bool ) : Void
-	{
-		
-		LocalBoolStack.push ( Value );
-		
-	};
-	
-	public function PopStringLocal () : String
-	{
-		
-		return LocalStringStack.pop ();
-		
-	};
-	
-	public function PopIntLocal () : Int
-	{
-		
-		return LocalIntStack.pop ();
-		
-	};
-	
-	public function PopFloatLocal () : Float
-	{
-		
-		return LocalFloatStack.pop ();
-		
-	};
-	
-	public function PopBoolLocal () : Bool
-	{
-		
-		return LocalBoolStack.pop ();
-		
-	};
-	
-	public function SetStringLocal ( Value:String, Index:UInt ) : Void
-	{
-		
-		LocalStringStack [ LocalStringStack.length - Index - 1 ] = Value;
-		
-	};
-	
-	public function SetIntLocal ( Value:Int, Index:UInt ) : Void
-	{
-		
-		LocalIntStack [ LocalIntStack.length - Index - 1 ] = Value;
-		
-	};
-	
-	public function SetFloatLocal ( Value:Float, Index:UInt ) : Void
-	{
-		
-		LocalFloatStack [ LocalFloatStack.length - Index - 1 ] = Value;
-		
-	};
-	
-	public function SetBoolLocal ( Value:Bool, Index:UInt ) : Void
-	{
-		
-		LocalBoolStack [ LocalBoolStack.length - Index - 1 ] = Value;
-		
-	};
-	
-	public function GetStringLocal ( Index:UInt ) : String
-	{
-		
-		return LocalStringStack [ LocalStringStack.length - Index - 1 ];
-		
-	};
-	
-	public function GetIntLocal ( Index:UInt ) : Int
-	{
-		
-		return LocalIntStack [ LocalIntStack.length - Index - 1 ];
-		
-	};
-	
-	public function GetFloatLocal ( Index:UInt ) : Float
-	{
-		
-		return LocalFloatStack [ LocalFloatStack.length - Index - 1 ];
-		
-	};
-	
-	public function GetBoolLocal ( Index:UInt ) : Bool
-	{
-		
-		return LocalBoolStack [ LocalBoolStack.length - Index - 1 ];
 		
 	};
 	

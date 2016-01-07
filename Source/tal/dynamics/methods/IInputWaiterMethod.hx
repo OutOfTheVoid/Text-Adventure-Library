@@ -5,6 +5,6 @@ import tal.dynamics.methods.IMethod;
 interface IInputWaiterMethod extends IMethod
 {
 	
-	function SupplyInput ( Input:String ) : Void;
+	public function SupplyInput ( Input:String ) : Void;
 	
 }

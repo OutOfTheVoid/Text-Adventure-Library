@@ -7,6 +7,6 @@ import openfl.events.KeyboardEvent;
 interface ICapturedInputWaiterMethod extends IMethod
 {
 	
-	function SupplyCapturedInput ( E:KeyboardEvent, Down:Bool ) : Void;
+	public function SupplyCapturedInput ( E:KeyboardEvent, Down:Bool ) : Void;
 	
 }
