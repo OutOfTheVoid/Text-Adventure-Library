@@ -7,9 +7,44 @@ import tal.dynamics.methods.IInputWaiterMethod;
 import tal.dynamics.methods.ICapturedInputWaiterMethod;
 
 import openfl.events.KeyboardEvent;
+import openfl.events.TimerEvent;
+
+import openfl.utils.Timer;
 
 import hscript.Interp;
 import hscript.Parser;
+
+class TimerUtil
+{
+	
+	private var TimerInstance:Timer;
+	private var Callback:Void -> Void;
+	
+	public function new ( Callback:Void -> Void, TimeoutMS:Float )
+	{
+		
+		TimerInstance = new Timer ( TimeoutMS, 1 );
+		
+		this.Callback = Callback;
+		
+		TimerInstance.addEventListener ( TimerEvent.TIMER, OnTimer );
+		TimerInstance.start ();
+		
+	};
+	
+	private function OnTimer ( T:TimerEvent ) : Void
+	{
+		
+		TimerInstance.removeEventListener ( TimerEvent.TIMER, OnTimer );
+		
+		Callback ();
+		
+		TimerInstance = null;
+		Callback = null;
+		
+	};
+	
+};
 
 class ScriptedMethod implements IMethod implements IInputWaiterMethod implements ICapturedInputWaiterMethod
 {
@@ -45,6 +80,8 @@ class ScriptedMethod implements IMethod implements IInputWaiterMethod implements
 		ScriptInterpreter.variables.set ( "WaitOnInput", WaitOnInputWrapper );
 		ScriptInterpreter.variables.set ( "WaitOnCapturedInput", WaitOnCapturedInputWrapper );
 		
+		ScriptInterpreter.variables.set ( "SetTimeout", SetTimeoutWrapper );
+		
 	};
 	
 	public function Link ( WorldInstance:World ) : Void
@@ -77,6 +114,13 @@ class ScriptedMethod implements IMethod implements IInputWaiterMethod implements
 		OnFinishedCallback = OnFinished;
 		
 		ScriptInterpreter.execute ( SyntaxTree );
+		
+	};
+	
+	private function SetTimeoutWrapper ( Callback:Void -> Void, TimeoutMS:Float ) : Void
+	{
+		
+		new TimerUtil ( Callback, TimeoutMS );
 		
 	};
 	

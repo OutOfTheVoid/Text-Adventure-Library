@@ -1,6 +1,6 @@
 package tal.dynamics;
 
-import tal.dynamics.room.IRoom;
+import tal.dynamics.rooms.IRoom;
 
 import tal.dynamics.commands.ICommand;
 import tal.dynamics.commands.BasicResponseCommand;

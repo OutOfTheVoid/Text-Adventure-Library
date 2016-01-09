@@ -1,4 +1,4 @@
-package tal.dynamics.room;
+package tal.dynamics.rooms;
 
 import tal.dynamics.commands.ICommand;
 

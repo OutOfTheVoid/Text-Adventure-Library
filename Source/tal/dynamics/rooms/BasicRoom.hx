@@ -1,10 +1,12 @@
-package tal.dynamics.room;
+package tal.dynamics.rooms;
 
 import tal.dynamics.commands.ICommand;
 
+import tal.dynamics.rooms.IRoom;
+
 import tal.dynamics.World;
 
-class BasicRoom
+class BasicRoom implements IRoom
 {
 	
 	private var IDName:String;
