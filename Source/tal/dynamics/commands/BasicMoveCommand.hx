@@ -2,6 +2,10 @@ package tal.dynamics.commands;
 
 import tal.util.parsing.StringParsingTools;
 
+import tal.dynamics.commands.ICommand;
+
+import tal.dynamics.methods.IMethod;
+
 class BasicMoveCommand
 {
 	
@@ -61,6 +65,8 @@ class BasicMoveCommand
 	private var DirectionNames:Array <String>;
 	private var AuxVerbs:Array <String>;
 	
+	private var DestinationIDName:String;
+	
 	public function new ( DirectionNames:Array <String>, VerbFlags:UInt, DestinationIDName:String, AuxVerbs:Array <String> = null )
 	{
 		
@@ -92,7 +98,7 @@ class BasicMoveCommand
 		
 		Argument = StringParsingTools.FormatCommandForMatching ( Argument );
 		
-		if ( VerbFlags & MOVE_MATCHES )
+		if ( ( VerbFlags & MOVE_MATCHES ) != 0 )
 		{
 			
 			for ( Verb in MoveMatches )
@@ -105,7 +111,7 @@ class BasicMoveCommand
 					{
 						
 						for ( Direction in DirectionNames )
-							if ( Arguments.indexOf ( Direction ) > Verb.length )
+							if ( Argument.indexOf ( Direction ) > Verb.length )
 								return MethodList;
 						
 					}
@@ -118,7 +124,7 @@ class BasicMoveCommand
 			
 		}
 		
-		if ( VerbFlags & TURN_MATCHES )
+		if ( ( VerbFlags & TURN_MATCHES ) != 0 )
 		{
 			
 			for ( Verb in TurnMatches )
@@ -131,7 +137,7 @@ class BasicMoveCommand
 					{
 						
 						for ( Direction in DirectionNames )
-							if ( Arguments.indexOf ( Direction ) > Verb.length )
+							if ( Argument.indexOf ( Direction ) > Verb.length )
 								return MethodList;
 						
 					}
@@ -144,7 +150,7 @@ class BasicMoveCommand
 			
 		}
 		
-		if ( VerbFlags & CLIMB_MATCHES )
+		if ( ( VerbFlags & CLIMB_MATCHES ) != 0 )
 		{
 			
 			for ( Verb in ClimbMatches )
@@ -157,7 +163,7 @@ class BasicMoveCommand
 					{
 						
 						for ( Direction in DirectionNames )
-							if ( Arguments.indexOf ( Direction ) > Verb.length )
+							if ( Argument.indexOf ( Direction ) > Verb.length )
 								return MethodList;
 						
 					}
@@ -170,7 +176,7 @@ class BasicMoveCommand
 			
 		}
 		
-		if ( VerbFlags & UP_MATCHES )
+		if ( ( VerbFlags & UP_MATCHES ) != 0 )
 		{
 			
 			for ( Verb in UpMatches )
@@ -183,7 +189,7 @@ class BasicMoveCommand
 					{
 						
 						for ( Direction in DirectionNames )
-							if ( Arguments.indexOf ( Direction ) > Verb.length )
+							if ( Argument.indexOf ( Direction ) > Verb.length )
 								return MethodList;
 						
 					}
@@ -196,7 +202,7 @@ class BasicMoveCommand
 			
 		}
 		
-		if ( VerbFlags & DOWN_MATCHES )
+		if ( ( VerbFlags & DOWN_MATCHES ) != 0 )
 		{
 			
 			for ( Verb in DownMatches )
@@ -209,7 +215,7 @@ class BasicMoveCommand
 					{
 						
 						for ( Direction in DirectionNames )
-							if ( Arguments.indexOf ( Direction ) > Verb.length )
+							if ( Argument.indexOf ( Direction ) > Verb.length )
 								return MethodList;
 						
 					}
@@ -235,7 +241,7 @@ class BasicMoveCommand
 					{
 						
 						for ( Direction in DirectionNames )
-							if ( Arguments.indexOf ( Direction ) > Verb.length )
+							if ( Argument.indexOf ( Direction ) > Verb.length )
 								return MethodList;
 						
 					}
@@ -260,4 +266,4 @@ class BasicMoveCommand
 		
 	};
 	
-};
+}

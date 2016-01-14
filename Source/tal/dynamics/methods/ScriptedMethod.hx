@@ -44,7 +44,7 @@ class TimerUtil
 		
 	};
 	
-};
+}
 
 class ScriptedMethod implements IMethod implements IInputWaiterMethod implements ICapturedInputWaiterMethod
 {
