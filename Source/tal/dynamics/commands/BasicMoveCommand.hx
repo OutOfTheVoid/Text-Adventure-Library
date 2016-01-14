@@ -5,8 +5,11 @@ import tal.util.parsing.StringParsingTools;
 import tal.dynamics.commands.ICommand;
 
 import tal.dynamics.methods.IMethod;
+import tal.dynamics.methods.ClearInputMethod;
+import tal.dynamics.methods.RoomChangeMethod;
+import tal.dynamics.methods.SimpleOutputMethod;
 
-class BasicMoveCommand
+class BasicMoveCommand implements ICommand
 {
 	
 	private static var MoveMatches:Array <String>;
@@ -65,9 +68,7 @@ class BasicMoveCommand
 	private var DirectionNames:Array <String>;
 	private var AuxVerbs:Array <String>;
 	
-	private var DestinationIDName:String;
-	
-	public function new ( DirectionNames:Array <String>, VerbFlags:UInt, DestinationIDName:String, AuxVerbs:Array <String> = null )
+	public function new ( DirectionNames:Array <String>, VerbFlags:UInt, DestinationIDName:String, Response:String = "", AuxVerbs:Array <String> = null )
 	{
 		
 		this.DirectionNames = DirectionNames;
@@ -75,14 +76,18 @@ class BasicMoveCommand
 		this.VerbFlags = VerbFlags;
 		this.AuxVerbs = AuxVerbs;
 		
-		this.DestinationIDName = DestinationIDName;
+		MethodList = new Array <IMethod> ();
+		
+		MethodList.push ( new ClearInputMethod () );
+		MethodList.push ( new SimpleOutputMethod ( Response ) );
+		MethodList.push ( new RoomChangeMethod ( DestinationIDName ) );
 		
 	};
 	
 	public function GetIDName () : String
 	{
 		
-		return "global.builtin.basichelp";
+		return "tal.methods.basicmove";
 		
 	};
 	
@@ -104,7 +109,7 @@ class BasicMoveCommand
 			for ( Verb in MoveMatches )
 			{
 				
-				if ( Verb == Argument.toLowerCase () )
+				if ( Argument.indexOf ( Verb ) == 0 )
 				{
 					
 					if ( ( DirectionNames != null ) && ( DirectionNames.length != 0 ) )
@@ -130,7 +135,7 @@ class BasicMoveCommand
 			for ( Verb in TurnMatches )
 			{
 				
-				if ( Verb == Argument.toLowerCase () )
+				if ( Argument.indexOf ( Verb ) == 0 )
 				{
 					
 					if ( ( DirectionNames != null ) && ( DirectionNames.length != 0 ) )
@@ -156,7 +161,7 @@ class BasicMoveCommand
 			for ( Verb in ClimbMatches )
 			{
 				
-				if ( Verb == Argument.toLowerCase () )
+				if ( Argument.indexOf ( Verb ) == 0 )
 				{
 					
 					if ( ( DirectionNames != null ) && ( DirectionNames.length != 0 ) )
@@ -182,7 +187,7 @@ class BasicMoveCommand
 			for ( Verb in UpMatches )
 			{
 				
-				if ( Verb == Argument.toLowerCase () )
+				if ( Argument.indexOf ( Verb ) == 0 )
 				{
 					
 					if ( ( DirectionNames != null ) && ( DirectionNames.length != 0 ) )
@@ -234,7 +239,7 @@ class BasicMoveCommand
 			for ( Verb in AuxVerbs )
 			{
 				
-				if ( Verb == Argument.toLowerCase () )
+				if ( Argument.indexOf ( Verb ) == 0 )
 				{
 					
 					if ( ( DirectionNames != null ) && ( DirectionNames.length != 0 ) )

@@ -150,7 +150,7 @@ class World
 				
 			}
 			
-			if ( ( MethodList != null ) && ( LocalCommandSet != null ) )
+			if ( ( MethodList == null ) && ( LocalCommandSet != null ) )
 			{
 				
 				for ( Command in LocalCommandSet )
@@ -170,7 +170,7 @@ class World
 				
 			}
 			
-			if ( ( MethodList != null ) && ( InventoryCommandSet != null ) )
+			if ( ( MethodList == null ) && ( InventoryCommandSet != null ) )
 			{
 				
 				for ( Command in InventoryCommandSet )
@@ -249,6 +249,8 @@ class World
 	public function SetRoom ( IDName:String ) : Void
 	{
 		
+		trace ( "SetRoom ( \"" + IDName + "\" );" );
+		
 		for ( Room in Rooms )
 		{
 			
@@ -257,8 +259,6 @@ class World
 				
 				if ( CurrentRoom != null )
 					CurrentRoom.Exit ();
-				
-				trace ( Room.GetSimpleDescription () );
 				
 				CurrentRoom = Room;
 				

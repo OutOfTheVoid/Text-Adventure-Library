@@ -82,8 +82,9 @@ class ExampleGame extends Sprite
 		var CommandSet:Array <ICommand> = new Array <ICommand> ();
 		
 		CommandSet.push ( new BasicResponseCommand ( "You stand in a red room.\n\n", [ "__enter" ] ) );
+		CommandSet.push ( new BasicMoveCommand ( [ "left" ], BasicMoveCommand.MOVE_MATCHES, "blue_room", "==> Go Left\n\nYou go left.\n\n" ) );
 		
-		GameWorld.AddRoom ( new BasicRoom ( "red_room", "A red room.", CommandSet, "__enter", "" ) );
+		GameWorld.AddRoom ( new BasicRoom ( "red_room", "A red room.", CommandSet, "__enter", null ) );
 		
 	};
 	
@@ -94,7 +95,7 @@ class ExampleGame extends Sprite
 		
 		CommandSet.push ( new BasicResponseCommand ( "You stand in a blue room.\n\n", [ "__enter" ] ) );
 		
-		GameWorld.AddRoom ( new BasicRoom ( "blue_room", "A blue room.", CommandSet, "__enter", "" ) );
+		GameWorld.AddRoom ( new BasicRoom ( "blue_room", "A blue room.", CommandSet, "__enter", null ) );
 		
 	};
 	
@@ -105,7 +106,7 @@ class ExampleGame extends Sprite
 		
 		CommandSet.push ( new BasicResponseCommand ( "You stand in a green room.\n\n", [ "__enter" ] ) );
 		
-		GameWorld.AddRoom ( new BasicRoom ( "green_room", "A red room.", CommandSet, "__enter", "" ) );
+		GameWorld.AddRoom ( new BasicRoom ( "green_room", "A red room.", CommandSet, "__enter", null ) );
 		
 	};
 	

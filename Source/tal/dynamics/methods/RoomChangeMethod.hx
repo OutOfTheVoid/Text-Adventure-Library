@@ -2,7 +2,9 @@ package tal.dynamics.methods;
 
 import tal.dynamics.World;
 
-class RoomChangeMethod
+import tal.dynamics.methods.IMethod;
+
+class RoomChangeMethod implements IMethod
 {
 	
 	private var Destination:String;
@@ -15,7 +17,7 @@ class RoomChangeMethod
 		
 	};
 	
-	public function Run ( OnFinished : Dynamic -> Void, UserData : Dynamic ) : Void
+	public function Run ( OnFinished : Void -> Void ) : Void
 	{
 		
 		WorldInstance.SetRoom ( Destination );

@@ -19,7 +19,7 @@ class BasicRoom implements IRoom
 	
 	private var WorldInstance:World;
 	
-	public function new ( IDName:String, SimpleDescription:String, CommandSet:Array <ICommand>, OnEnterCommand:String, OnExitCommand:String )
+	public function new ( IDName:String, SimpleDescription:String, CommandSet:Array <ICommand>, OnEnterCommand:String, OnExitCommand:String = null )
 	{
 		
 		this.IDName = IDName;
@@ -72,7 +72,7 @@ class BasicRoom implements IRoom
 	{
 		
 		if ( OnEnterCommand != null )
-			WorldInstance.EnqueueCommand ( OnEnterCommand, true );
+			WorldInstance.EnqueueCommand ( OnExitCommand, true );
 		
 	};
 	
