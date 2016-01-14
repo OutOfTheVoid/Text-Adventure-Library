@@ -237,6 +237,8 @@ class World
 		for ( Room in Rooms )
 		{
 			
+			Room.Link ( this );
+			
 			for ( Command in Room.GetLocalCommandSet () )
 				Command.Link ( this );
 			
@@ -256,7 +258,12 @@ class World
 				if ( CurrentRoom != null )
 					CurrentRoom.Exit ();
 				
+				trace ( Room.GetSimpleDescription () );
+				
 				CurrentRoom = Room;
+				
+				LocalCommandSet = CurrentRoom.GetLocalCommandSet ();
+				
 				CurrentRoom.Enter ();
 				
 				return;

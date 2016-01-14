@@ -33,6 +33,8 @@ class ExampleGame extends Sprite
 		InitRooms ();
 		Link ();
 		
+		GameWorld.SetRoom ( "red_room" );
+		
 	};
 	
 	private function InitInterface ( Width:UInt, Height:UInt ) : Void
@@ -79,7 +81,7 @@ class ExampleGame extends Sprite
 		
 		var CommandSet:Array <ICommand> = new Array <ICommand> ();
 		
-		CommandSet.push ( new BasicResponseCommand ( "You enter a red room.\n\n", [ "__enter" ] ) );
+		CommandSet.push ( new BasicResponseCommand ( "You stand in a red room.\n\n", [ "__enter" ] ) );
 		
 		GameWorld.AddRoom ( new BasicRoom ( "red_room", "A red room.", CommandSet, "__enter", "" ) );
 		
@@ -90,7 +92,7 @@ class ExampleGame extends Sprite
 		
 		var CommandSet:Array <ICommand> = new Array <ICommand> ();
 		
-		CommandSet.push ( new BasicResponseCommand ( "You enter a blue room.\n\n", [ "__enter" ] ) );
+		CommandSet.push ( new BasicResponseCommand ( "You stand in a blue room.\n\n", [ "__enter" ] ) );
 		
 		GameWorld.AddRoom ( new BasicRoom ( "blue_room", "A blue room.", CommandSet, "__enter", "" ) );
 		
@@ -101,7 +103,7 @@ class ExampleGame extends Sprite
 		
 		var CommandSet:Array <ICommand> = new Array <ICommand> ();
 		
-		CommandSet.push ( new BasicResponseCommand ( "You enter a green room.\n\n", [ "__enter" ] ) );
+		CommandSet.push ( new BasicResponseCommand ( "You stand in a green room.\n\n", [ "__enter" ] ) );
 		
 		GameWorld.AddRoom ( new BasicRoom ( "green_room", "A red room.", CommandSet, "__enter", "" ) );
 		
@@ -112,7 +114,7 @@ class ExampleGame extends Sprite
 		
 		var CommandSet:Array <ICommand> = new Array <ICommand> ();
 		
-		CommandSet.push ( new BasicResponseCommand ( "You enter a white room.\n\n", [ "__enter" ] ) );
+		CommandSet.push ( new BasicResponseCommand ( "You stand in a white room.\n\n", [ "__enter" ] ) );
 		
 		GameWorld.AddRoom ( new BasicRoom ( "white_room", "A red room.", CommandSet, "__enter", "" ) );
 		
