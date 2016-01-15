@@ -15,6 +15,12 @@ import tal.dynamics.commands.BasicResponseCommand;
 import tal.dynamics.commands.ActionTemplateCommand;
 
 import tal.dynamics.methods.IMethod;
+
+import tal.dynamics.methods.ConditionalMethod;
+import tal.dynamics.methods.ClearInputMethod;
+import tal.dynamics.methods.RoomChangeMethod;
+import tal.dynamics.methods.SimpleOutputMethod;
+
 import tal.dynamics.methods.ScriptedMethod;
 
 class ExampleGame extends Sprite
@@ -82,7 +88,10 @@ class ExampleGame extends Sprite
 		var CommandSet:Array <ICommand> = new Array <ICommand> ();
 		
 		CommandSet.push ( new BasicResponseCommand ( "You stand in a red room.\n\n", [ "__enter" ] ) );
-		CommandSet.push ( new BasicMoveCommand ( [ "left" ], BasicMoveCommand.MOVE_MATCHES, "blue_room", "==> Go Left\n\nYou go left.\n\n" ) );
+		CommandSet.push ( new BasicResponseCommand ( "==> Look\n\nYou stand in a red room. The walls are made of red-stained wood, and the ceiling is white plaster. The floor below you is hard cement, and a drain sits cirectly center. To your left and right are doors, and on the ground in front of you sits a large machine with a series of knobs and switches, but no distinct labeling.\n\n", [ "look", "look around", "look room", "examine room" ] ) );
+		
+		// Left door.
+		CommandSet.push ( new BasicMoveCommand ( [ "left", "left door", "through left door" ], BasicMoveCommand.MOVE_MATCHES, "blue_room", "==> Go Left\n\nYou go left, through the door.\n\n" ) );
 		
 		GameWorld.AddRoom ( new BasicRoom ( "red_room", "A red room.", CommandSet, "__enter", null ) );
 		
