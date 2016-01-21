@@ -2,9 +2,10 @@ package tal.dynamics.commands.matching;
 
 import tal.dynamics.World;
 
-import tal.util.StringParsingTools;
+import tal.dynamics.commands.matching.ICommandMatch;
+import tal.util.parsing.StringParsingTools;
 
-class BasicCommandMatch
+class BasicCommandMatch implements ICommandMatch
 {
 	
 	private var Matches:Array <String>;

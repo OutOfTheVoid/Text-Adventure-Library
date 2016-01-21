@@ -5,6 +5,8 @@ import tal.dynamics.rooms.IRoom;
 import tal.dynamics.commands.ICommand;
 import tal.dynamics.commands.BasicResponseCommand;
 
+import tal.dynamics.commands.matching.BasicCommandMatch;
+
 import tal.dynamics.methods.IMethod;
 import tal.dynamics.methods.IInputWaiterMethod;
 import tal.dynamics.methods.ICapturedInputWaiterMethod;
@@ -76,7 +78,7 @@ class World
 		MethodQueueStack = new Array <MethodQueue> ();
 		CommandQueue = new Array <Array <IMethod>> ();
 		
-		GlobalHelpDefinition = new BasicResponseCommand ( "==> Help\n\nHelp: Hello world!\n\n", [ "help" ] );
+		GlobalHelpDefinition = new BasicResponseCommand ( "==> Help\n\nHelp: Hello world!\n\n", new BasicCommandMatch ( [ "help" ] ) );
 		GlobalCommandSet.push ( GlobalHelpDefinition );
 		
 		Blocked = false;

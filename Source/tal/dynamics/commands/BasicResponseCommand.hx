@@ -2,6 +2,8 @@ package tal.dynamics.commands;
 
 import tal.dynamics.commands.ICommand;
 
+import tal.dynamics.commands.matching.ICommandMatch;
+
 import tal.dynamics.methods.IMethod;
 import tal.dynamics.methods.SimpleOutputMethod;
 import tal.dynamics.methods.ClearInputMethod;
@@ -14,9 +16,9 @@ class BasicResponseCommand implements ICommand
 	private var MethodList:Array <IMethod>;
 	private var ResponseMethod:SimpleOutputMethod;
 	
-	private var MatchList:Array <String>;
+	private var Matcher:ICommandMatch;
 	
-	public function new ( Response:String, MatchList:Array <String> )
+	public function new ( Response:String, Matcher:ICommandMatch )
 	{
 		
 		MethodList = new Array <IMethod> ();
@@ -26,7 +28,7 @@ class BasicResponseCommand implements ICommand
 		MethodList.push ( ResponseMethod );
 		MethodList.push ( new ClearInputMethod () );
 		
-		this.MatchList = MatchList;
+		this.Matcher = Matcher;
 		
 	};
 	
@@ -47,15 +49,8 @@ class BasicResponseCommand implements ICommand
 	public function Test ( Argument:String ) : Array <IMethod>
 	{
 		
-		Argument = StringParsingTools.FormatCommandForMatching ( Argument );
-		
-		for ( Match in MatchList )
-		{
-			
-			if ( Argument == Match )
-				return MethodList;
-			
-		}
+		if ( Matcher.Test ( Argument ) )
+			return MethodList;
 		
 		return null;
 		
@@ -73,6 +68,8 @@ class BasicResponseCommand implements ICommand
 		
 		for ( Method in MethodList )
 			Method.Link ( WorldInstance );
+		
+		Matcher.Link ( WorldInstance );
 		
 	};
 	

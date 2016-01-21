@@ -3,6 +3,7 @@ package tal.dynamics.commands;
 import tal.dynamics.methods.IMethod;
 
 import tal.dynamics.commands.ICommand;
+import tal.dynamics.commands.matching.ICommandMatch;
 
 import tal.util.parsing.StringParsingTools;
 
@@ -11,19 +12,18 @@ class ActionTemplateCommand implements ICommand
 	
 	private var MethodList:Array <IMethod>;
 	
-	private var TestReg:EReg;
-	
 	private var IDName:String;
 	private var Hidden:Bool;
 	
-	public function new ( MethodList:Array <IMethod>, IDName:String, Hidden:Bool, RegExPattern:String, RegExOptions:String = "gi" )
+	private var Matcher:ICommandMatch;
+	
+	public function new ( MethodList:Array <IMethod>, IDName:String, Matcher:ICommandMatch, Hidden:Bool )
 	{
 		
 		this.MethodList = MethodList;
 		this.IDName = IDName;
 		this.Hidden = Hidden;
-		
-		TestReg = new EReg ( RegExPattern, RegExOptions );
+		this.Matcher = Matcher;
 		
 	};
 	
@@ -44,14 +44,7 @@ class ActionTemplateCommand implements ICommand
 	public function Test ( Argument:String ) : Array <IMethod>
 	{
 		
-		Argument = StringParsingTools.FormatCommandForMatching ( Argument );
-		
-		if ( ! TestReg.match ( Argument ) )
-			return null;
-		
-		var MatchParams:Dynamic = TestReg.matchedPos ();
-		
-		if ( ( MatchParams.pos == 0 ) && ( MatchParams.len == Argument.length ) )
+		if ( Matcher.Test ( Argument ) )
 			return MethodList;
 		
 		return null;
@@ -63,6 +56,8 @@ class ActionTemplateCommand implements ICommand
 		
 		for ( Method in MethodList )
 			Method.Link ( WorldInstance );
+		
+		Matcher.Link ( WorldInstance );
 		
 	};
 	
