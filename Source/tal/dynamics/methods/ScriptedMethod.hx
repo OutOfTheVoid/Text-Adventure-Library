@@ -105,6 +105,7 @@ class ScriptedMethod implements IMethod implements IInputWaiterMethod implements
 		ScriptInterpreter.variables.set ( "ClearInput", WorldInstance.ClearInput );
 		ScriptInterpreter.variables.set ( "GetPrompt", WorldInstance.GetPrompt );
 		ScriptInterpreter.variables.set ( "EnqueueCommand", WorldInstance.EnqueueCommand );
+		ScriptInterpreter.variables.set ( "GetCurrentRoomVName", WorldInstance.GetCurrentRoomVName );
 		
 	};
 	

@@ -57,6 +57,8 @@ class World
 	private var InputWaiter:IInputWaiterMethod;
 	private var CapturedInputWaiter:ICapturedInputWaiterMethod;
 	
+	private var CurrentRoomVName:String;
+	
 	public function new ()
 	{
 		
@@ -78,12 +80,14 @@ class World
 		MethodQueueStack = new Array <MethodQueue> ();
 		CommandQueue = new Array <Array <IMethod>> ();
 		
-		GlobalHelpDefinition = new BasicResponseCommand ( "==> Help\n\nHelp: Hello world!\n\n", new BasicCommandMatch ( [ "help" ] ) );
+		GlobalHelpDefinition = new BasicResponseCommand ( "==> Help\n\nHelp: Text Adventure Library Development Release.\n\nTry looking around?\n\n", new BasicCommandMatch ( [ "help" ] ) );
 		GlobalCommandSet.push ( GlobalHelpDefinition );
 		
 		Blocked = false;
 		Executing = false;
 		EnteredContext = false;
+		
+		CurrentRoomVName = "__rt_current_room";
 		
 	};
 	
@@ -109,6 +113,24 @@ class World
 		
 		Interface.SetCapturedInputCallback ( CapturedInputCallback );
 		Interface.SetInputCallback ( InputCallback );
+		
+	};
+	
+	public function SetCurrentRoomVName ( VName:String ) : Void
+	{
+		
+		StringVariables [ CurrentRoomVName ] = "";
+		
+		CurrentRoomVName = VName;
+		
+		StringVariables [ CurrentRoomVName ] = CurrentRoom.GetIDName ();
+		
+	};
+	
+	public function GetCurrentRoomVName () : String
+	{
+		
+		return CurrentRoomVName;
 		
 	};
 	
@@ -267,6 +289,8 @@ class World
 				LocalCommandSet = CurrentRoom.GetLocalCommandSet ();
 				
 				CurrentRoom.Enter ();
+				
+				StringVariables.set ( CurrentRoomVName, IDName );
 				
 				return;
 				
